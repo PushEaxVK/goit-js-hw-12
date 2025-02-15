@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla App Template</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <form class="form">
+          <!-- Search image by keyword -->
+          <input
+            class="form-input"
+            type="text"
+            id="search"
+            name="search"
+            placeholder="Search images..."
+            autocomplete="off"
+          />
+          <button type="submit" class="form-button">Search</button>
+        </form>
+
+        <div class="gallery">
+          <ul class="gallery-list"></ul>
+        </div>
+
+        <span class="loader"></span>
+      </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
