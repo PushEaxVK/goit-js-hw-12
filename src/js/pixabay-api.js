@@ -9,20 +9,18 @@ const BASE_URL = 'https://pixabay.com/api/';
 // orientation — орієнтація фотографії. Постав значення horizontal.
 // safesearch — фільтр за віком. Постав значення true.
 
-export function searchImages(query) {
+export async function searchImages(query, page = 1) {
   const params = {
     key: API_KEY,
     q: query,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: 'true',
+    per_page: 40,
+    page,
   };
-  return axios
-    .get(BASE_URL, { params })
-    .then(response => {
-      return response.data.hits;
-    })
-    .catch(error => {
-      console.log(error);
-    });
+
+  const response = await axios.get(BASE_URL, { params });
+  console.log(response.data);
+  return response.data.hits;
 }
