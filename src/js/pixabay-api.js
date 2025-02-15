@@ -1,3 +1,5 @@
+'use strict';
+
 import axios from 'axios';
 
 const API_KEY = '48710632-74e9a639a0cf21f0899e63b1f';
@@ -21,6 +23,5 @@ export async function searchImages(query, page = 1) {
   };
 
   const response = await axios.get(BASE_URL, { params });
-  console.log(response.data);
   return response.data;
 }

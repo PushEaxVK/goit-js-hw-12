@@ -9,8 +9,6 @@ import {
 
 const refs = {
   form: document.querySelector('.form'),
-  input: document.querySelector('.form-input'),
-  button: document.querySelector('.form-button'),
   gallery: document.querySelector('.gallery-list'),
   loader: document.querySelector('.loader'),
   more: document.querySelector('.load-more'),
@@ -53,8 +51,9 @@ async function handleFormSubmitAsync(event) {
     }
   } catch (error) {
     showErrorMessage('Sorry, something went wrong. Please try again!');
+  } finally {
+    refs.loader.style.display = 'none';
   }
-  refs.loader.style.display = 'none';
 }
 
 async function handleLoadMoreClick() {
@@ -71,8 +70,19 @@ async function handleLoadMoreClick() {
       refs.more.style.display = 'block';
     }
     renderAppendCards(refs.gallery, data.hits);
+    window.scrollBy({
+      top: getCardHeight(),
+      behavior: 'smooth',
+    });
   } catch (error) {
     showErrorMessage('Sorry, something went wrong. Please try again!');
+  } finally {
+    refs.loader.style.display = 'none';
   }
-  refs.loader.style.display = 'none';
+}
+
+function getCardHeight() {
+  const card = document.querySelector('.gallery-item:nth-child(1)');
+  const rect = card.getBoundingClientRect();
+  return rect.height * 2;
 }
