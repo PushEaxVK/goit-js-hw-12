@@ -22,5 +22,5 @@ export async function searchImages(query, page = 1) {
 
   const response = await axios.get(BASE_URL, { params });
   console.log(response.data);
-  return response.data.hits;
+  return response.data;
 }

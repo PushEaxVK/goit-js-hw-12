@@ -13,9 +13,11 @@ const refs = {
   button: document.querySelector('.form-button'),
   gallery: document.querySelector('.gallery-list'),
   loader: document.querySelector('.loader'),
+  more: document.querySelector('.load-more'),
 };
 
 refs.form.addEventListener('submit', handleFormSubmitAsync);
+refs.more.addEventListener('click', handleLoadMoreClick);
 refs.loader.style.display = 'none';
 
 let searchQuery = '';
@@ -35,16 +37,42 @@ async function handleFormSubmitAsync(event) {
   refs.loader.style.display = 'block';
   try {
     const data = await searchImages(value);
-    refs.loader.style.display = 'none';
-    if (data.length === 0) {
+    if (data.hits.length === 0) {
       showErrorMessage(
         'Sorry, there are no images matching your search query. Please try again!'
       );
     } else {
-      renderAllCards(refs.gallery, data);
+      renderAllCards(refs.gallery, data.hits);
+      if (data.hits.length < 40) {
+        showErrorMessage(
+          "We're sorry, but you've reached the end of search results."
+        );
+      } else {
+        refs.more.style.display = 'block';
+      }
     }
   } catch (error) {
-    refs.loader.style.display = 'none';
     showErrorMessage('Sorry, something went wrong. Please try again!');
   }
+  refs.loader.style.display = 'none';
+}
+
+async function handleLoadMoreClick() {
+  page += 1;
+  refs.loader.style.display = 'block';
+  refs.more.style.display = 'none';
+  try {
+    const data = await searchImages(searchQuery, page);
+    if (data.hits.length < 40 || page * 40 > data.totalHits) {
+      showErrorMessage(
+        "We're sorry, but you've reached the end of search results."
+      );
+    } else {
+      refs.more.style.display = 'block';
+    }
+    renderAppendCards(refs.gallery, data.hits);
+  } catch (error) {
+    showErrorMessage('Sorry, something went wrong. Please try again!');
+  }
+  refs.loader.style.display = 'none';
 }
